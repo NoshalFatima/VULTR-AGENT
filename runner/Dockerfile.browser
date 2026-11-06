@@ -1,0 +1,4 @@
+FROM mcr.microsoft.com/playwright/python:v1.48.0-jammy
+COPY browse.py /browse.py
+WORKDIR /work
+ENTRYPOINT ["python", "/browse.py"]

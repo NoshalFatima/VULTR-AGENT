@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sandbox Agent</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><div class="app">
+<header><button class="ib" id="menu" aria-label="Chat history" data-i="menu"></button><b>Sandbox Agent</b><button class="pill" id="shield"><span data-i="shield" data-s="14"></span>Secure</button></header>
+<div class="seg"><button data-m="code" class="on">Code</button><button data-m="browser">Browser</button></div>
+<main id="feed"><div class="hello"><h2>Give a task. Watch it run.</h2><p>Every line of code runs in an isolated sandbox on Vultr.</p></div></main>
+<form id="form"><textarea id="task" rows="1" maxlength="2000" placeholder="Ask the agent to do something…"></textarea><button id="send" aria-label="Send" data-i="up"></button></form>
+<footer>Runs on Vultr · isolated gVisor sandbox</footer>
+<div id="scrim" hidden></div>
+<aside id="drawer"><div class="dh"><button id="new" class="primary"><span data-i="plus" data-s="14"></span>New chat</button></div><div id="hist"></div><button id="clear" class="ghost"><span data-i="trash" data-s="16"></span>Clear history</button></aside>
+<section id="sheet"><div class="sh"><b>Containment</b><span id="sstate" class="ok"></span></div><div id="srows"></div><div id="atk"></div><div class="sbtn"><button id="run" class="primary">Run attack tests</button><button id="close" class="ghost">Close</button></div></section>
+<div id="login" hidden><form id="lform"><h3>Enter access code</h3><input id="code" type="password" autocomplete="off" maxlength="200"><button class="primary">Continue</button><small id="lerr"></small></form></div>
+</div><script src="/static/app.js"></script></body></html>

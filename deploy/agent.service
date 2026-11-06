@@ -1,0 +1,16 @@
+[Unit]
+Description=Sandbox agent control plane
+After=network.target
+[Service]
+User=agent
+EnvironmentFile=/etc/agent/control.env
+WorkingDirectory=/opt/agent/control
+ExecStart=/opt/agent/venv/bin/uvicorn app:app --host 127.0.0.1 --port 8000 --proxy-headers --forwarded-allow-ips=127.0.0.1 --no-server-header
+StateDirectory=agent
+Restart=always
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+[Install]
+WantedBy=multi-user.target

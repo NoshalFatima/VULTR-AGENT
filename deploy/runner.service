@@ -1,0 +1,16 @@
+[Unit]
+Description=Sandbox runner
+After=docker.service
+Requires=docker.service
+[Service]
+User=runner
+EnvironmentFile=/etc/agent/runner.env
+WorkingDirectory=/opt/agent/runner
+ExecStart=/opt/agent/venv/bin/uvicorn runner:app --host ${PRIVATE_IP} --port 8001 --no-server-header
+Restart=always
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+[Install]
+WantedBy=multi-user.target
