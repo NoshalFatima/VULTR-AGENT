@@ -5,7 +5,7 @@
 Built for the **Vultr: Agent Rush Hackathon**, Challenge 1 "Blast Radius Zero". License: MIT.
 
 - **Live demo:** https://64-177-57-193.nip.io (access code is provided in the LabLab submission)
-- **Demo video:** [ADD VIDEO LINK]
+- **Demo video:** https://youtube.com/shorts/kMEeNdR-Ln4?si=3ZXeZJJuICq7L0gf
 
 ## What it does
 Give it a task in a chat UI. The agent loop runs on a Vultr VM:
