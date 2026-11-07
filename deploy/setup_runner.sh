@@ -21,9 +21,12 @@ docker build -t sbx-proxy:1   -f runner/Dockerfile.proxy   runner/
 # Internal network: no route to the internet. The ONLY exit is the allowlist proxy.
 docker network inspect sbx-internal &>/dev/null || docker network create --internal sbx-internal
 docker rm -f egress-proxy &>/dev/null || true
+echo "nameserver 1.1.1.1" > /opt/agent/resolv.conf
+echo "nameserver 8.8.8.8" >> /opt/agent/resolv.conf
 docker run -d --name egress-proxy --restart always --runtime=runsc --read-only --cap-drop ALL \
-  --security-opt no-new-privileges --memory 128m --pids-limit 100 -e ALLOW="$ALLOW" sbx-proxy:1
+  --security-opt no-new-privileges --memory 128m --pids-limit 100 -e ALLOW="$ALLOW" -v /opt/agent/resolv.conf:/etc/resolv.conf:ro sbx-proxy:1
 docker network connect --alias egress-proxy sbx-internal egress-proxy
+docker restart egress-proxy
 
 mkdir -p /etc/agent
 cat > /etc/agent/runner.env <<ENV

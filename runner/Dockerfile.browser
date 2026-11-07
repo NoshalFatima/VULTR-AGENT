@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/playwright/python:v1.48.0-jammy
+RUN pip install --no-cache-dir playwright==1.48.0
 COPY browse.py /browse.py
 WORKDIR /work
 ENTRYPOINT ["python", "/browse.py"]

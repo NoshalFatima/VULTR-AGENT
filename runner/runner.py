@@ -88,12 +88,15 @@ async def exec_python(request: Request):
     async with LIMIT:
         return await sandbox(PY_IMAGE, {"code": code, "timeout": TIMEOUT - 3}, timeout=TIMEOUT)
 
+def proxy_ip():
+    import subprocess
+    return subprocess.check_output(["docker", "inspect", "-f", '{{(index .NetworkSettings.Networks "sbx-internal").IPAddress}}', "egress-proxy"], text=True).strip()
 @app.post("/exec/browser")
 async def exec_browser(request: Request):
     acts = check_actions(json.loads(await signed(request)).get("actions"))
     async with LIMIT:
         return await sandbox(BR_IMAGE, {"actions": acts}, net="sbx-internal", timeout=BR_TIMEOUT, mem="1g", cpus="1", pids="256",
-                             user="pwuser", extra=["--shm-size=256m"])
+                             user="pwuser", extra=["--shm-size=256m", "--add-host", "egress-proxy:" + proxy_ip()])
 
 TESTS = [
  ("Network access is blocked", "import urllib.request\nurllib.request.urlopen('https://example.com', timeout=3)", lambda r: r["exit_code"] != 0),
