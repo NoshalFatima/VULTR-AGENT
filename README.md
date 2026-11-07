@@ -16,15 +16,16 @@ Give it a task in a chat UI. The agent loop runs on a Vultr VM:
 Pattern A (sandboxed code execution) and Pattern B (sandboxed browser use with Playwright and screenshots) are both implemented.
 Example tasks: CSV analysis and charts, self-healing code runs, "open a page, read a heading, count words", site checks.
 
-## Architecture
-```
-Browser ──HTTPS──> Caddy ──> Control VM (FastAPI, SQLite history, sessions)
-                                │        └──> Vultr Serverless Inference (all LLM calls)
-                                │ HMAC-signed requests over Vultr VPC (private IP only)
-                                ▼
-                           Runner VM: Docker + gVisor (runsc), one fresh container per step
-                                │  python  : --network none
-                                │  browser : internal network ──> HTTPS allowlist proxy ──> internet
+```mermaid
+flowchart LR
+    U[Browser] -->|HTTPS| C[Caddy]
+    C --> A["Control VM<br/>FastAPI, SQLite, agent loop"]
+    A -->|all LLM calls| V["Vultr Serverless Inference"]
+    A -->|"HMAC-signed requests<br/>Vultr VPC, private IP only"| R["Runner VM<br/>Docker + gVisor (runsc)"]
+    R -->|"python step<br/>--network none"| P["Fresh Python sandbox<br/>destroyed after each step"]
+    R -->|"browser step<br/>internal network"| B["Fresh Playwright sandbox"]
+    B --> X["HTTPS allowlist proxy"]
+    X -->|allowlisted domains only| I[Internet]
 ```
 
 ## Vultr services used
